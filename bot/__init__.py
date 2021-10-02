@@ -182,8 +182,20 @@ if DB_URI is not None:
         cur.close()
         conn.close()
 
+try:
+    CHAT_ID = getConfig('CHAT_ID')
+    DELAY = int(getConfig('DELAY'))
+    SESSION_STRING = str(getConfig('SESSION_STRING'))
+    CUSTOM_MESSAGES = getConfig('CUSTOM_MESSAGES')
+except:
+    pass
+
 LOGGER.info("Generating USER_SESSION_STRING")
 app = Client('Slam', api_id=int(TELEGRAM_API), api_hash=TELEGRAM_HASH, bot_token=BOT_TOKEN)
+
+rss_session = None
+if SESSION_STRING is not None and SESSION_STRING != "":
+    rss_session = Client(SESSION_STRING, api_id=int(TELEGRAM_API), api_hash=TELEGRAM_HASH)
 
 DRIVE_NAME = []
 DRIVE_ID = []
@@ -200,6 +212,12 @@ if os.path.exists('drive_folder'):
                 SEARCH_INDEXES.append(temp[2])
             except IndexError as e:
                 SEARCH_INDEXES.append(None)
+
+if DRIVE_ID :
+    pass
+else :
+    LOGGER.error("The README.md file there to be read! Exiting now!")
+    exit(1)
 
 # Generate Telegraph Token
 sname = ''.join(random.SystemRandom().choices(string.ascii_letters, k=8))
@@ -345,21 +363,15 @@ try:
     IGNORE_PENDING_REQUESTS = IGNORE_PENDING_REQUESTS.lower() == 'true'
 except KeyError:
     IGNORE_PENDING_REQUESTS = False
-
-if DRIVE_ID :
-    pass
-else :
-    LOGGER.error("The README.md file there to be read! Exiting now!")
-    exit(1)
-
 try:
-    CHAT_ID = getConfig('CHAT_ID')
-    DELAY = int(getConfig('DELAY'))
-    INIT_FEEDS = getConfig('INIT_FEEDS')
-    CUSTOM_MESSAGES = getConfig('CUSTOM_MESSAGES')        
-except:
-    pass
-
+    HEROKU_API_KEY = getConfig('HEROKU_API_KEY')
+    HEROKU_APP_NAME = getConfig('HEROKU_APP_NAME')
+    if len(HEROKU_API_KEY) == 0 or len(HEROKU_APP_NAME) == 0:
+        HEROKU_API_KEY = None
+        HEROKU_APP_NAME = None
+except KeyError:
+    HEROKU_API_KEY = None
+    HEROKU_APP_NAME = None
 try:
     BASE_URL = getConfig('BASE_URL_OF_BOT')
     if len(BASE_URL) == 0:

@@ -23,6 +23,8 @@ class _BotCommands:
         self.CloneCommand = 'clone'
         self.CountCommand = 'count'
         self.WatchCommand = 'watch'
+        self.RebootCommand = 'reboot'
+        self.ShutDownCommand = 'shutdown'
         self.TarWatchCommand = 'tarwatch'
         self.ZipWatchCommand = 'zipwatch'
         self.QbMirrorCommand = 'qbmirror'
